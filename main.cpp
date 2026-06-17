@@ -7,7 +7,8 @@
 #include "weapon.h"
 #include "player.h"
 #include "npc.h"
-#include "targetable.h"
+#include "characterbase.h"
+#include "gamecontroller.h"
 
 using namespace std;
 
@@ -17,9 +18,11 @@ int main()
     NPC npc("Orc", 100, Weapon("Gore Dagger"));
     Container chest(Container::CHEST);
 
+    GameController gc('c');
+
     while (true)
     {
-        cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Exit" << endl;
+        cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Print Objects\n6 - Exit" << endl;
 
         int input;
         string choice = "";
@@ -63,12 +66,15 @@ int main()
                     player.openInventory();
                     break;
                 case 3:
-                    npc.swing(player);
+                    npc.attack(player);
                     break;
                 case 4:
                     player.attack(npc);
                     break;
                 case 5:
+                    gc.PrintObjects();
+                    break;
+                case 6:
                     return 0;
                 default:
                     cout << "Invalid input." << endl;

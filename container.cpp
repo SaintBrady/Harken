@@ -13,19 +13,21 @@ using namespace std;
 Container::Container(Type type)
 {
     slots = type;
+    inventory = new Item*[15]();
 }
 
 void Container::genRandItems(Container &container)
 {
-    string itemTable[6] = {"Gold Coin", "Health Potion", "Sword", "Shield", "Radiant Mace", "Gore Dagger"};
-    int numItems = container.slots;
-
-    Item items[numItems];
+    string itemTable[6] = {"Gold Coin", "Health Potion", "Arcane Crystal", "Lute", "Radiant Mace", "Gore Dagger"};
     srand(time(0));
-    for(int i = 0; i < numItems; i++)
+
+    for(int i = 0; i < container.slots; i++)
     {
         int index = rand() % size(itemTable);
-        container.inventory.push_back(Item(itemTable[index]));
+        if(index > 3) {
+            container.inventory[i] = new Weapon(itemTable[index]);
+        }
+        else {container.inventory[i] = new Item(itemTable[index]);}
     }
 }
 
@@ -34,45 +36,49 @@ void Container::open(Player& player, Container& container)
     genRandItems(container);
 
     cout << "You found the following items in the chest:" << endl;
-    for (int i = 0; i <= slots; i++)
+    for (int i = 0; i < slots; i++)
     {
-        container.inventory.push_back(container.inventory.at(i));
-        cout << "- " << container.inventory.at(i).name << endl;
+        cout << "- " << inventory[i]->name.c_str() << endl;
     }
 
+    input_loop:
     cout << "Select item(s) to add to your inventory (enter the item name, all, or done to finish): ";
+
     string choice;
     getline(cin >> ws, choice);
+    bool takeAll = (choice == "all");
+    bool found = false;
 
     while (choice != "done")
     {
-        if (choice == "all")
+        for (int i = 0; i < slots; i++)
         {
-            for (Item& item : inventory)
+            // If container slot has item, valid item or all selected, go through loop and add to inventory
+            if (container.inventory[i] == NULL || ((container.inventory[i]->name != choice) && !takeAll)) continue;
+
+            for(int j = 0; j < player.INVENTORY_SIZE; j++)
             {
-                player.inventory.push_back(item);
-            }
-            cout << "All items added to your inventory." << endl;
-            break;
-        }
-        else
-        {
-            bool found = false;
-            for (Item& item : inventory)
-            {
-                cout << "Checking Item name \'" << item.name << "\' against choice \'" << choice << "\'.\n";
-                if (item.name == choice)
+                if(player.inventory[j] == NULL)
                 {
-                    player.inventory.push_back(item);
-                    cout << item.name << " added to your inventory." << endl;
-                    inventory.erase(find(inventory.begin(), inventory.end(), item));
+                    player.inventory[j] = container.inventory[i];
+                    container.inventory[i] = NULL;
                     found = true;
-                    break;
+
+                    if(takeAll) break;
+                    else
+                    {
+                        cout << player.inventory[j]->name << " added to your inventory." << endl;
+                        goto input_loop;
+                    }
                 }
             }
-            if(!found) cout << "Item not found in the chest. ";
         }
-        cout << "Select another item or type 'done' to finish: ";
-        getline(cin >> ws, choice);
+        if(!found)
+        {
+            cout << "Item not found in the chest." << endl;
+            goto input_loop;
+        }
+        cout << "All items added to your inventory." << endl;
+        return;
     }
 }

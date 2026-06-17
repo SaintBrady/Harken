@@ -2,20 +2,19 @@
 #define ITEM_H
 
 #include <string>
+#include "GameObject.h"
 
-using namespace std;
-
-class Item
+class Item : public GameObject
 {
     public:
-        string name;
         int x;
         bool equippable;
 
         Item();
-        Item(string name);
+        Item(std::string name);
 
         void destroy();
+        virtual void dummy() {};
 };
 
 bool operator==(const Item& item1, const Item& item2);

@@ -5,19 +5,17 @@
 
 #include "item.h"
 #include "weapon.h"
-#include "targetable.h"
+#include "characterbase.h"
 
-class Player : public Targetable
+class Player : public CharacterBase
 {
     public:
-        std::vector<Item> inventory;
-        Weapon weapon;
+        Item** inventory;
+        const int INVENTORY_SIZE = 15;
 
         Player(std::string name, int health);
 
         void openInventory();
-
-        void attack(Targetable& target);
 };
 
 #endif

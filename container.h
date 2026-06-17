@@ -6,13 +6,11 @@
 #include "item.h"
 #include "player.h"
 
-using namespace std;
-
 class Container
 {
     public:
         int slots;
-        vector<Item> inventory;
+        Item** inventory;
         enum Type {
             CHEST = 5,
             BARREL = 3,

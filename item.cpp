@@ -2,17 +2,14 @@
 
 #include "item.h"
 
-using namespace std;
-
-string name = "";
-int x = -1;
-bool equippable = false;
+bool equippable;
 
 Item::Item(){}
 
-Item::Item(string name)
+Item::Item(std::string name)
 {
     this->name = name;
+    equippable = false;
 }
 
 void Item::destroy()

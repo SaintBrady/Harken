@@ -1,5 +1,6 @@
 #include <string>
 #include <map>
+#include <iostream>
 
 #include "item.h"
 #include "weapon.h"
@@ -16,13 +17,16 @@ Weapon::Weapon(string name)
 
 map<string, int> Weapon::weaponsAlias =
 {
-    {"Empty", 0},
+    {"Unarmed", 0},
     {"Gore Dagger", 1},
-    {"Radiant Mace", 2}
+    {"Radiant Mace", 2},
+    {"Rusty Knife", 3}
 };
 
-int Weapon::weaponsTable[3][3] = {
-    {0, 0, 0},
-    {1, 12, 2},
-    {2, 14, 25}
+// ID, Damage, Crit Rating
+int Weapon::weaponsTable[4][3] = {
+    {0, 1, 0},
+    {1, 12, 20},
+    {2, 14, 25},
+    {3, 9, 12}
 };

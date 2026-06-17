@@ -11,11 +11,11 @@ class Weapon : public Item
     public:
         float damage, critRating;
 
-        Weapon(std::string name = "Empty");
+        Weapon(std::string name = "Unarmed");
 
     private:
         static std::map<string, int> weaponsAlias;
-        static int weaponsTable[3][3];
+        static int weaponsTable[4][3];
 };
 
 #endif

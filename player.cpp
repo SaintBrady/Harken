@@ -4,7 +4,6 @@
 
 #include "item.h"
 #include "weapon.h"
-#include "targetable.h"
 #include "player.h"
 
 using namespace std;
@@ -13,15 +12,16 @@ Player::Player(string name, int health)
 {
     this->name = name;
     this->health = health;
-    weapon = Weapon("Empty");
+    inventory = new Item*[INVENTORY_SIZE]();
 }
 
 void Player::openInventory()
 {
     cout << "-- Inventory --" << endl;
-    for (Item& item : inventory)
+    for (int i = 0; i < INVENTORY_SIZE; i++)
     {
-        cout << item.name.c_str() << endl;
+        if(inventory[i] == NULL) continue;
+        cout << "- " << inventory[i]->name.c_str() << endl;
     }
 
     while(true)
@@ -32,37 +32,20 @@ void Player::openInventory()
 
         if(choice == "done") return;
 
-        for (Item& item : inventory)
+        for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            // Push current weapon back to inventory, then equip selected and remove from inventory
+            if(inventory[i] == NULL) continue;
+            Item item = *inventory[i];
+
             if (item.name == choice && item.equippable)
             {
-                if(weapon.name != "Empty")
-                {
-                    inventory.push_back(weapon);
-                }
-
-                Weapon *wep = new Weapon(item.name.c_str());
-                weapon = *wep;
-
-                cout << item.name << " has been equipped." << endl;
-                inventory.erase(find(inventory.begin(), inventory.end(), item));
+                Weapon* wepPtr = weapon;
+                weapon = static_cast<Weapon*>(inventory[i]);
+                inventory[i] = wepPtr;
+                cout << "Equipping " << weapon->name << " with damage value of " << weapon->damage << endl;
                 return;
             }
         }
-        cout << "Item not found or is unequippable! ";
+        cout << "Item not found or is unequippable! " << endl;
     }
-}
-
-void Player::attack(Targetable& target)
-{
-    int damage = weapon.damage;
-    cout << "Base weapon damage of swing: " << damage << endl;
-    if (((float)rand() / (float)(RAND_MAX)) <= weapon.critRating)
-    {
-        damage += weapon.damage;
-    }
-
-    target.damage(damage);
-    printf("%s swings at %s for %d damage! %s has %d health left...\n\n", name.c_str(), target.name.c_str(), damage, target.name.c_str(), target.health);
 }
