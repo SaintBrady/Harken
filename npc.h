@@ -1,6 +1,8 @@
 #ifndef NPC_H
 #define NPC_H
 
+#include <string>
+
 #include "characterbase.h"
 #include "weapon.h"
 

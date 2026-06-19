@@ -1,10 +1,4 @@
-#include <string>
-#include <iostream>
-
 #include "characterbase.h"
-#include "weapon.h"
-
-using namespace std;
 
 void CharacterBase::damage(int amount)
 {
@@ -15,12 +9,14 @@ void CharacterBase::attack(CharacterBase& target)
 {
     Weapon *weapon = this->weapon;
     int damage = weapon->damage;
-    cout << "Base weapon damage of swing: " << damage << endl;
+    std::string critText = "";
+
     if (((float)rand() / (float)(RAND_MAX)) <= weapon->critRating)
     {
-        damage += weapon->damage;
+        critText = "It is a critical hit! ";
+        damage *= 2;
     }
 
     target.damage(damage);
-    printf("%s swings at %s for %d damage! %s has %d health left...\n\n", name.c_str(), target.name.c_str(), damage, target.name.c_str(), target.health);
+    printf("%s swings at %s for %d damage. %s\n%s has %d health remaining\n\n", name.c_str(), target.name.c_str(), damage, critText.c_str(), target.name.c_str(), target.health);
 }

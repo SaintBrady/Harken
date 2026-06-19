@@ -1,13 +1,9 @@
 #include <string>
 #include <map>
-#include <iostream>
 
-#include "item.h"
 #include "weapon.h"
 
-using namespace std;
-
-Weapon::Weapon(string name)
+Weapon::Weapon(std::string name)
 {
     this->name = name;
     equippable = true;
@@ -15,7 +11,7 @@ Weapon::Weapon(string name)
     critRating = weaponsTable[weaponsAlias[name]][2] / 100.0;
 }
 
-map<string, int> Weapon::weaponsAlias =
+std::map<std::string, int> Weapon::weaponsAlias =
 {
     {"Unarmed", 0},
     {"Gore Dagger", 1},

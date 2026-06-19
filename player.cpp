@@ -1,8 +1,6 @@
 #include <iostream>
-#include <vector>
-#include <bits/stdc++.h>
+#include <string>
 
-#include "item.h"
 #include "weapon.h"
 #include "player.h"
 
@@ -13,6 +11,8 @@ Player::Player(string name, int health)
     this->name = name;
     this->health = health;
     inventory = new Item*[INVENTORY_SIZE]();
+    this->position.x = 15.0;
+    this->position.y = 10.0;
 }
 
 void Player::openInventory()

@@ -1,7 +1,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <string>
 #include "GameObject.h"
 
 class Item : public GameObject
@@ -13,10 +12,9 @@ class Item : public GameObject
         Item();
         Item(std::string name);
 
-        void destroy();
-        virtual void dummy() {};
-};
+        bool operator==(const Item& item);
 
-bool operator==(const Item& item1, const Item& item2);
+        void destroy();
+};
 
 #endif

@@ -1,17 +1,14 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include <bits/stdc++.h>
 
-#include "item.h"
 #include "weapon.h"
-#include "player.h"
 #include "container.h"
 
 using namespace std;
 
 Container::Container(Type type)
 {
+    name = "Chest";
     slots = type;
     inventory = new Item*[15]();
 }
@@ -23,7 +20,7 @@ void Container::genRandItems(Container &container)
 
     for(int i = 0; i < container.slots; i++)
     {
-        int index = rand() % size(itemTable);
+        int index = rand() % (sizeof(itemTable)/sizeof(*itemTable));
         if(index > 3) {
             container.inventory[i] = new Weapon(itemTable[index]);
         }
@@ -31,9 +28,9 @@ void Container::genRandItems(Container &container)
     }
 }
 
-void Container::open(Player& player, Container& container)
+void Container::open(Player& player)
 {
-    genRandItems(container);
+    genRandItems(*this);
 
     cout << "You found the following items in the chest:" << endl;
     for (int i = 0; i < slots; i++)
@@ -54,14 +51,14 @@ void Container::open(Player& player, Container& container)
         for (int i = 0; i < slots; i++)
         {
             // If container slot has item, valid item or all selected, go through loop and add to inventory
-            if (container.inventory[i] == NULL || ((container.inventory[i]->name != choice) && !takeAll)) continue;
+            if (inventory[i] == NULL || ((inventory[i]->name != choice) && !takeAll)) continue;
 
             for(int j = 0; j < player.INVENTORY_SIZE; j++)
             {
                 if(player.inventory[j] == NULL)
                 {
-                    player.inventory[j] = container.inventory[i];
-                    container.inventory[i] = NULL;
+                    player.inventory[j] = inventory[i];
+                    inventory[i] = NULL;
                     found = true;
 
                     if(takeAll) break;

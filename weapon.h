@@ -14,7 +14,7 @@ class Weapon : public Item
         Weapon(std::string name = "Unarmed");
 
     private:
-        static std::map<string, int> weaponsAlias;
+        static std::map<std::string, int> weaponsAlias;
         static int weaponsTable[4][3];
 };
 

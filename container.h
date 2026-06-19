@@ -6,7 +6,7 @@
 #include "item.h"
 #include "player.h"
 
-class Container
+class Container : public GameObject
 {
     public:
         int slots;
@@ -19,7 +19,7 @@ class Container
 
         Container(Type type);
         void genRandItems(Container &container);
-        void open(Player& player, Container& container);
+        void open(Player &player);
 };
 
 #endif

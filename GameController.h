@@ -9,9 +9,8 @@ class GameController
     public:
         std::vector<GameObject*> envObjects;
 
-        GameController(char c);
-        //void spawnEnemies();
-        void PrintObjects();
+        GameController();
+        void printObjects();
 };
 
 #endif

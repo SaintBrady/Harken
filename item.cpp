@@ -1,5 +1,3 @@
-#include <string>
-
 #include "item.h"
 
 bool equippable;
@@ -17,7 +15,7 @@ void Item::destroy()
 
 }
 
-bool operator==(const Item& item1, const Item& item2)
+bool Item::operator==(const Item& item)
 {
-    return item1.name == item2.name;
+    return this->name == item.name;
 }

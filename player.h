@@ -1,10 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
+#include <string>
 
 #include "item.h"
-#include "weapon.h"
 #include "characterbase.h"
 
 class Player : public CharacterBase

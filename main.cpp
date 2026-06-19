@@ -1,14 +1,11 @@
 #include <iostream>
-#include <string>
-#include <vector>
 
 #include "container.h"
-#include "item.h"
 #include "weapon.h"
 #include "player.h"
 #include "npc.h"
-#include "characterbase.h"
 #include "gamecontroller.h"
+#include "vector2d.h"
 
 using namespace std;
 
@@ -18,7 +15,7 @@ int main()
     NPC npc("Orc", 100, Weapon("Gore Dagger"));
     Container chest(Container::CHEST);
 
-    GameController gc('c');
+    GameController gc;
 
     while (true)
     {
@@ -44,22 +41,8 @@ int main()
             {
                 case 1:
                 {
-                    cout << "You see a chest. Do you want to open it? (y/n): ";
-                    getline(cin, choice);
-
-                    if(choice == "y" || choice == "Y")
-                    {
-                        chest.open(player, chest);
-                    }
-                    else if(choice == "n" || choice == "N")
-                    {
-                        cout << "You decide not to open the chest." << endl;
-                    }
-                    else
-                    {
-                        cout << "Invalid input. Please enter 'y' or 'n'." << endl;
-                    }
-                    
+                    chest.open(player);
+                    break;
                 }
                     break;
                 case 2:
@@ -72,7 +55,12 @@ int main()
                     player.attack(npc);
                     break;
                 case 5:
-                    gc.PrintObjects();
+                    chest.position.setPosition(10.0, 13.0);
+                    chest.position /= 3.0;
+                    gc.envObjects.push_back(&chest);
+                    gc.envObjects.push_back(&player);
+                    gc.envObjects.push_back(&npc);
+                    gc.printObjects();
                     break;
                 case 6:
                     return 0;
