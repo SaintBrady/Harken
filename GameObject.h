@@ -2,14 +2,14 @@
 #define GAMEOBJECT_H
 
 #include <string>
-#include "vector2d.h"
+#include "transform.h"
 
 class GameObject
 {
     public:
         std::string name;
 
-        Vector2D position;
+        Transform transform;
 };
 
 #endif

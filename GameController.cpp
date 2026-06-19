@@ -10,6 +10,6 @@ void GameController::printObjects()
 {
     for (GameObject* g : envObjects)
     {
-        std::cout << g->name << " located at " << g->position << std::endl;
+        std::cout << g->name << " located at " << g->transform.position << std::endl;
     }
 }

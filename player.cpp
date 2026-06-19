@@ -11,8 +11,8 @@ Player::Player(string name, int health)
     this->name = name;
     this->health = health;
     inventory = new Item*[INVENTORY_SIZE]();
-    this->position.x = 15.0;
-    this->position.y = 10.0;
+    this->transform.position.x = 15.0;
+    this->transform.position.y = 10.0;
 }
 
 void Player::openInventory()

@@ -5,7 +5,8 @@
 #include "player.h"
 #include "npc.h"
 #include "gamecontroller.h"
-#include "vector2d.h"
+#include "vector3d.h"
+#include "quaternion.h"
 
 using namespace std;
 
@@ -14,6 +15,9 @@ int main()
     Player player("Hero", 100);
     NPC npc("Orc", 100, Weapon("Gore Dagger"));
     Container chest(Container::CHEST);
+    Quaternion q1(0.0, 1.0, 1.0, 1.0);
+    q1.Normalize();
+    Quaternion up(0.0, 0.0, 0.0, 1.0);
 
     GameController gc;
 
@@ -55,8 +59,9 @@ int main()
                     player.attack(npc);
                     break;
                 case 5:
-                    chest.position.setPosition(10.0, 13.0);
-                    chest.position /= 3.0;
+                    chest.transform.position.setPosition(3.0, 0.0, 0.0);
+                    player.transform.position.setPosition(2.0, 7.0, -5.0);
+                    //chest.transform.position /= 3.0;
                     gc.envObjects.push_back(&chest);
                     gc.envObjects.push_back(&player);
                     gc.envObjects.push_back(&npc);
@@ -64,6 +69,14 @@ int main()
                     break;
                 case 6:
                     return 0;
+                case 7:
+                    //cout << "Q1: " << q1 << ", Q2: " << q2 << ", Q1*Q2: " << q1 * q2 << endl;
+                    cout << "Chest rotation before: " << chest.transform.rotation << endl;
+                
+                    chest.transform.rotation = q1;
+                    chest.transform.rotation.Rotate(up);
+                    cout << "Chest rotation after: " << chest.transform.rotation << endl;
+                    break;
                 default:
                     cout << "Invalid input." << endl;
             }

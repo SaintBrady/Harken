@@ -31,8 +31,6 @@ class Vector2D
         Vector2D& Normalized();
 
         void setPosition(float x, float y);
-    
-    private:
 };
 
 #endif
