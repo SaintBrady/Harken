@@ -11,6 +11,21 @@ Container::Container(Type type)
     name = "Chest";
     slots = type;
     inventory = new Item*[15]();
+
+    float points[8][3] = {
+        {-1, -1, 0},
+        {-1, 1, 0},
+        {1, -1, 0},
+        {1, 1, 0},
+        {-1, -1, 1},
+        {-1, 1, 1},
+        {1, -1, 1},
+        {1, 1, 1}
+    };
+    for(int i = 0; i < 8; i++)
+    {
+        mesh.points.push_back(new Vector3D(points[i][0], points[i][1], points[i][2]));
+    }
 }
 
 void Container::genRandItems(Container &container)

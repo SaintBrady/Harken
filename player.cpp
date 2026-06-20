@@ -13,6 +13,8 @@ Player::Player(string name, int health)
     inventory = new Item*[INVENTORY_SIZE]();
     this->transform.position.x = 15.0;
     this->transform.position.y = 10.0;
+    this->transform.position.z = 2.0;
+    mesh.points.push_back(new Vector3D(2.0, 3.0, 0.0));
 }
 
 void Player::openInventory()

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "vector3d.h"
+#include "mesh.h"
 
 class Quaternion
 {
@@ -20,6 +21,7 @@ class Quaternion
 
         friend Quaternion& operator*(Quaternion& q1, const Quaternion& q2);
         Quaternion& Rotate(Quaternion& q2);
+        void Rotate(Mesh& g, Quaternion& axis, float theta);
 
         Quaternion& Conjugate();
         Quaternion& Normalized();

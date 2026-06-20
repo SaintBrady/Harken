@@ -10,6 +10,8 @@ class Transform
         Vector3D position;
         Vector3D scale;
         Quaternion rotation;
+
+        Transform();
 };
 
 #endif

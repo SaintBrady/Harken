@@ -10,6 +10,8 @@
 
 using namespace std;
 
+const float PI = 3.14159265;
+
 int main()
 {
     Player player("Hero", 100);
@@ -18,6 +20,11 @@ int main()
     Quaternion q1(0.0, 1.0, 1.0, 1.0);
     q1.Normalize();
     Quaternion up(0.0, 0.0, 0.0, 1.0);
+    Quaternion other(0.0, 0.0, 1.0, 0.0);
+
+    Vector3D vec1(4.0, 4.0, 4.0);
+    Vector3D vec2(3.0, 3.0, 3.0);
+    Vector3D tempVec;
 
     GameController gc;
 
@@ -74,8 +81,23 @@ int main()
                     cout << "Chest rotation before: " << chest.transform.rotation << endl;
                 
                     chest.transform.rotation = q1;
-                    chest.transform.rotation.Rotate(up);
+                    //chest.transform.rotation.Rotate(up);
                     cout << "Chest rotation after: " << chest.transform.rotation << endl;
+                    break;
+                case 8:
+                    cout << "--Chest points--" << endl;
+                    for(Vector3D *point : chest.mesh.points)
+                    {
+                        cout << *point << endl;
+                    }
+                    cout << endl << "--After rotation--" << endl;
+                    chest.transform.rotation.Rotate(chest.mesh, other, PI/6);
+                    chest.transform.rotation.Rotate(chest.mesh, up, PI/4);
+                    break;
+                case 9:
+                    cout << "Player point before rotation: " << *player.mesh.points.at(0) << endl;
+                    player.transform.rotation.Rotate(player.mesh, up, PI/2);
+                    cout << "Player point after rotation: " << *player.mesh.points.at(0) << endl;
                     break;
                 default:
                     cout << "Invalid input." << endl;

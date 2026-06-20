@@ -3,6 +3,7 @@
 
 #include <string>
 #include "transform.h"
+#include "mesh.h"
 
 class GameObject
 {
@@ -10,6 +11,7 @@ class GameObject
         std::string name;
 
         Transform transform;
+        Mesh mesh;
 };
 
 #endif

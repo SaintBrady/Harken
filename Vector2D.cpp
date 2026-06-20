@@ -1,6 +1,5 @@
 #include <cmath>
 #include "vector2d.h"
-#include <iostream>
 
 Vector2D::Vector2D()
 {
@@ -24,32 +23,32 @@ Vector2D& Vector2D::Normalized()
 
 Vector2D& Vector2D::Add(const Vector2D& v)
 {
-    this->x += v.x;
-    this->y += v.y;
+    x += v.x;
+    y += v.y;
 
     return *this;
 }
 
 Vector2D& Vector2D::Subtract(const Vector2D& v)
 {
-    this->x -= v.x;
-    this->y -= v.y;
+    x -= v.x;
+    y -= v.y;
 
     return *this;
 }
 
 Vector2D& Vector2D::Multiply(const Vector2D& v)
 {
-    this->x *= v.x;
-    this->y *= v.y;
+    x *= v.x;
+    y *= v.y;
 
     return *this;
 }
 
 Vector2D& Vector2D::Divide(const Vector2D& v)
 {
-    this->x /= v.x;
-    this->y /= v.y;
+    x /= v.x;
+    y /= v.y;
 
     return *this;
 }

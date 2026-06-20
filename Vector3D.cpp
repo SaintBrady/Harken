@@ -50,12 +50,29 @@ Vector3D& Vector3D::Multiply(const Vector3D& v)
     return *this;
 }
 
+Vector3D& Vector3D::Multiply(const float scalar)
+{
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+
+    return *this;
+}
 
 Vector3D& Vector3D::Divide(const Vector3D& v)
 {
     x /= v.x;
     y /= v.y;
     z /= v.z;
+
+    return *this;
+}
+
+Vector3D& Vector3D::Divide(const float scalar)
+{
+    x /= scalar;
+    y /= scalar;
+    z /= scalar;
 
     return *this;
 }
@@ -76,30 +93,32 @@ float Vector3D::Dot(const Vector3D& v)
     return ((x * v.x) + (y * v.y) + (z * v.z));
 }
 
-
-Vector3D& operator+(Vector3D& v1, const Vector3D& v2)
+Vector3D& operator+(Vector3D v1, const Vector3D& v2)
 {
     return v1.Add(v2);
 }
 
-Vector3D& operator-(Vector3D& v1, const Vector3D& v2)
+Vector3D& operator-(Vector3D v1, const Vector3D& v2)
 {
     return v1.Subtract(v2);
 }
 
-Vector3D& operator*(Vector3D& v1, const float scalar)
+Vector3D& operator*(Vector3D v1, const float scalar)
 {
-    Vector3D *v2 = new Vector3D(v1.x * scalar, v1.y * scalar, v1.z * scalar);
-
-    return *v2;
+    return v1.Multiply(scalar);
 }
 
-Vector3D& operator*(Vector3D& v1, const Vector3D& v2)
+Vector3D& operator*(Vector3D v1, const Vector3D& v2)
 {
     return v1.Multiply(v2);
 }
 
-Vector3D& operator/(Vector3D& v1, const Vector3D& v2)
+Vector3D& operator/(Vector3D v1, const float scalar)
+{
+    return v1.Divide(scalar);
+}
+
+Vector3D& operator/(Vector3D v1, const Vector3D& v2)
 {
     return v1.Divide(v2);
 }
@@ -136,6 +155,13 @@ void Vector3D::setPosition(const float x, const float y, const float z)
     this->x = x;
     this->y = y;
     this->z = z;
+}
+
+void Vector3D::setPosition(const Vector3D& v)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Vector3D& v)

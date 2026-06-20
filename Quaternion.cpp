@@ -1,5 +1,6 @@
 #include <cmath>
 #include "quaternion.h"
+#include <iostream>
 
 Quaternion::Quaternion()
 {
@@ -67,10 +68,11 @@ Quaternion& Quaternion::Divide(const float scalar)
 
 Quaternion& operator*(Quaternion& q1, const Quaternion& q2)
 {
-    Vector3D* v1 = new Vector3D(q1.x, q1.y, q1.z);
-    Vector3D* v2 = new Vector3D(q2.x, q2.y, q2.z);
-
-    Quaternion* q = new Quaternion(((q1.w * q2.w) - v1->Dot(*v2)), ((*v2 * q1.w) + (*v1 * q2.w) + (v1->Cross(*v2))));
+    Quaternion* q = new Quaternion( 
+        ((q1.w*q2.w) - (q1.x*q2.x) - (q1.y*q2.y) - (q1.z*q2.z)), 
+        ((q1.w*q2.x) + (q1.x*q2.w) + (q1.y*q2.z) - (q1.z*q2.y)), 
+        ((q1.w*q2.y) - (q1.x*q2.z) + (q1.y*q2.w) + (q1.z*q2.x)), 
+        ((q1.w*q2.z) + (q1.x*q2.y) - (q1.y*q2.x) + (q1.z*q2.w)) );
 
     return *q;
 }
@@ -104,4 +106,26 @@ std::ostream& operator<<(std::ostream& stream, const Quaternion& q1)
 Quaternion& Quaternion::Rotate(Quaternion& q2)
 {
     return (q2 * (*this));
+}
+
+void Quaternion::Rotate(Mesh& g, Quaternion& axis, float theta)
+{
+    axis.Normalize();
+    float sine = sin(theta/2);
+    w = cos(theta/2);
+    x = axis.x * sine;
+    y = axis.y * sine;
+    z = axis.z * sine;
+
+    for(Vector3D *point : g.points)
+    {
+        Quaternion p(0.0, *point);
+        Quaternion q2 = this->Conjugate();
+        Quaternion qPrime = (*this) * p * q2;
+
+        point->x = qPrime.x;
+        point->y = qPrime.y;
+        point->z = qPrime.z;
+        std::cout << *point << std::endl;
+    }
 }
