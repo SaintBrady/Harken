@@ -12,25 +12,22 @@ using namespace std;
 
 const float PI = 3.14159265;
 
+//g++ -o main.exe -I ./TransformComponents *.cpp TransformComponents/*.cpp
 int main()
 {
+    GameController gc;
     Player player("Hero", 100);
     NPC npc("Orc", 100, Weapon("Gore Dagger"));
     Container chest(Container::CHEST);
-    Quaternion q1(0.0, 1.0, 1.0, 1.0);
-    q1.Normalize();
-    Quaternion up(0.0, 0.0, 0.0, 1.0);
-    Quaternion other(0.0, 0.0, 1.0, 0.0);
 
-    Vector3D vec1(4.0, 4.0, 4.0);
-    Vector3D vec2(3.0, 3.0, 3.0);
-    Vector3D tempVec;
-
-    GameController gc;
-
+    // Global axis rotation quaternions for testing
+    Quaternion xQ(0.0, 1.0, 0.0, 0.0);
+    Quaternion yQ(0.0, 0.0, 1.0, 0.0);
+    Quaternion zQ(0.0, 0.0, 0.0, 1.0);
+    
     while (true)
     {
-        cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Print Objects\n6 - Exit" << endl;
+        cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Print Objects\n6 - Rotate Chest\n7 - Exit" << endl;
 
         int input;
         string choice = "";
@@ -68,39 +65,26 @@ int main()
                 case 5:
                     chest.transform.position.setPosition(3.0, 0.0, 0.0);
                     player.transform.position.setPosition(2.0, 7.0, -5.0);
-                    //chest.transform.position /= 3.0;
                     gc.envObjects.push_back(&chest);
                     gc.envObjects.push_back(&player);
                     gc.envObjects.push_back(&npc);
                     gc.printObjects();
                     break;
                 case 6:
-                    return 0;
+                    cout << "--Chest Points Before Rotation--" << endl;
+                    chest.mesh.printPoints();
+
+                    chest.transform.rotation.Rotate(chest.mesh, yQ, PI/6);
+                    chest.transform.rotation.Rotate(chest.mesh, zQ, PI/4);
+
+                    cout << endl << "--Chest Points After Rotation--" << endl;
+                    chest.mesh.printPoints();
+
+                    break;
                 case 7:
-                    //cout << "Q1: " << q1 << ", Q2: " << q2 << ", Q1*Q2: " << q1 * q2 << endl;
-                    cout << "Chest rotation before: " << chest.transform.rotation << endl;
-                
-                    chest.transform.rotation = q1;
-                    //chest.transform.rotation.Rotate(up);
-                    cout << "Chest rotation after: " << chest.transform.rotation << endl;
-                    break;
-                case 8:
-                    cout << "--Chest points--" << endl;
-                    for(Vector3D *point : chest.mesh.points)
-                    {
-                        cout << *point << endl;
-                    }
-                    cout << endl << "--After rotation--" << endl;
-                    chest.transform.rotation.Rotate(chest.mesh, other, PI/6);
-                    chest.transform.rotation.Rotate(chest.mesh, up, PI/4);
-                    break;
-                case 9:
-                    cout << "Player point before rotation: " << *player.mesh.points.at(0) << endl;
-                    player.transform.rotation.Rotate(player.mesh, up, PI/2);
-                    cout << "Player point after rotation: " << *player.mesh.points.at(0) << endl;
-                    break;
+                    return 0;
                 default:
-                    cout << "Invalid input." << endl;
+                    cout << "Invalid input..." << endl;
             }
         }
     }

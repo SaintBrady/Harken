@@ -36,10 +36,9 @@ void Container::genRandItems(Container &container)
     for(int i = 0; i < container.slots; i++)
     {
         int index = rand() % (sizeof(itemTable)/sizeof(*itemTable));
-        if(index > 3) {
-            container.inventory[i] = new Weapon(itemTable[index]);
-        }
-        else {container.inventory[i] = new Item(itemTable[index]);}
+        
+        if(index > 3) container.inventory[i] = new Weapon(itemTable[index]);
+        else container.inventory[i] = new Item(itemTable[index]);
     }
 }
 

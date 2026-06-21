@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "vector3d.h"
-#include "mesh.h"
+#include "../mesh.h"
 
 class Quaternion
 {

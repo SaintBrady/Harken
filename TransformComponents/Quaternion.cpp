@@ -1,6 +1,5 @@
 #include <cmath>
 #include "quaternion.h"
-#include <iostream>
 
 Quaternion::Quaternion()
 {
@@ -126,6 +125,5 @@ void Quaternion::Rotate(Mesh& g, Quaternion& axis, float theta)
         point->x = qPrime.x;
         point->y = qPrime.y;
         point->z = qPrime.z;
-        std::cout << *point << std::endl;
     }
 }

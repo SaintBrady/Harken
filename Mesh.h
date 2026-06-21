@@ -8,6 +8,8 @@ class Mesh
 {
     public:
         std::vector<Vector3D*> points;
+
+        void printPoints();
 };
 
 #endif

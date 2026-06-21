@@ -3,6 +3,7 @@
 
 #include <string>
 #include "transform.h"
+#include "vector3d.h"
 #include "mesh.h"
 
 class GameObject
