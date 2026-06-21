@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\gokap\Downloads\HarkenRPG\Harken\Harken\src\main.cpp(28,16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Harken.vcxproj -> C:\Users\gokap\Downloads\HarkenRPG\Harken\x64\Debug\Harken.exe

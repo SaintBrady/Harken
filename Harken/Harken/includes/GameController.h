@@ -1,0 +1,16 @@
+#ifndef GAMECONTROLLER_H
+#define GAMECONTROLLER_H
+
+#include <vector>
+#include "GameObject.h"
+
+class GameController
+{
+    public:
+        std::vector<GameObject*> envObjects;
+
+        GameController();
+        void printObjects();
+};
+
+#endif
