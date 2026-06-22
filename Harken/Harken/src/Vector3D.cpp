@@ -23,6 +23,11 @@ Vector3D& Vector3D::Normalized()
     return *vec;
 }
 
+void Vector3D::Normalize()
+{
+    *this = this->Normalized();
+}
+
 Vector3D& Vector3D::Add(const Vector3D& v)
 {
     x += v.x;

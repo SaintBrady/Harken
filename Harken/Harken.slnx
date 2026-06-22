@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Harken/Harken.vcxproj" />
+  <Project Path="Harken/Harken.vcxproj" Id="01cc65d0-7055-44ee-b21d-95c92cb42346" />
 </Solution>

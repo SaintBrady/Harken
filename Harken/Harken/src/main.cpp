@@ -8,6 +8,8 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <shaders/shader.h>
@@ -53,35 +55,63 @@ int main()
     }
 
     // Build and compile shaders
-    Shader mainShader("C:/Users/gokap/Downloads/HarkenRPG/Harken/Harken/includes/shaders/shader.vs", "C:/Users/gokap/Downloads/HarkenRPG/Harken/Harken/includes/shaders/shader.fs");
+    Shader mainShader("includes/shaders/shader.vs", "includes/shaders/shader.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
-    };
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
     // Create buffers
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
 
     // Bind Buffers
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Position attrib
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -119,6 +149,16 @@ int main()
     }
     stbi_image_free(data);
 
+    Container chest(Container::CHEST);
+    Vector3D chestPos = chest.transform.position;
+    Quaternion chestRot = chest.transform.rotation;
+
+    Vector3D rotAxis(0.2, 0.3, 0.4);
+    rotAxis.Normalize();
+    float angle = 0.0;
+
+    glEnable(GL_DEPTH_TEST);
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -126,21 +166,25 @@ int main()
 
         // Render pipeline
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindTexture(GL_TEXTURE_2D, mainTexture);
 
-        // create transformations
-        glm::mat4 transform = glm::mat4(1.0f);
-        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        angle += 0.0005;
+        if (angle >= 360) angle -= 360;
+
+        chestRot.Rotate(rotAxis, angle);
+        chestRot.Normalize();
+        
+        glm::quat myQuat(chestRot.w, chestRot.x, chestRot.y, chestRot.z);
+        glm::mat4 transform = glm::toMat4(myQuat);
 
         mainShader.use();
         unsigned int transformLoc = glGetUniformLocation(mainShader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -148,7 +192,6 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 
     glfwTerminate();
     return 0;
@@ -165,20 +208,20 @@ int main()
     
     while (true)
     {
-        cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Print Objects\n6 - Rotate Chest\n7 - Exit" << endl;
+        std::cout << "-- Available Actions --\n1 - Spawn Chest\n2 - Open Inventory\n3 - Orc Swing\n4 - Player Swing\n5 - Print Objects\n6 - Rotate Chest\n7 - Exit" << std::endl;
 
         int input;
-        string choice = "";
+        std::string choice = "";
         bool validInput = true;
 
-        getline(cin, choice);
+        std::getline(std::cin, choice);
         try
         {
             input = stoi(choice);
         }
-        catch(exception e)
+        catch(std::exception e)
         {
-            cout << "Invalid Input..." << endl;
+            std::cout << "Invalid Input..." << std::endl;
             validInput = false;
         }
 
@@ -209,23 +252,24 @@ int main()
                     gc.printObjects();
                     break;
                 case 6:
-                    cout << "--Chest Points Before Rotation--" << endl;
+                    std::cout << "--Chest Points Before Rotation--" << std::endl;
                     chest.mesh.printPoints();
 
-                    chest.transform.rotation.Rotate(chest.mesh, yQ, PI/6);
+                    //chest.transform.rotation.Rotate(chest.mesh, yQ, PI/6);
                     chest.transform.rotation.Rotate(chest.mesh, zQ, PI/4);
 
-                    cout << endl << "--Chest Points After Rotation--" << endl;
+                    std::cout << std::endl << "--Chest Points After Rotation--" << std::endl;
                     chest.mesh.printPoints();
 
                     break;
                 case 7:
                     return 0;
                 default:
-                    cout << "Invalid input..." << endl;
+                    std::cout << "Invalid input..." << std::endl;
             }
         }
-    }*/
+    }
+    return 0;*/
 }
 
 // Handles window resizing

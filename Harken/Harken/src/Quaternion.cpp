@@ -102,12 +102,12 @@ std::ostream& operator<<(std::ostream& stream, const Quaternion& q1)
 }
 
 // Global rotates around other Quaternion
-Quaternion& Quaternion::Rotate(Quaternion& q2)
+Quaternion& Quaternion::Rotate(Quaternion& q2, float speed)
 {
-    return (q2 * (*this));
+    return (q2 * (*this) *(this->Conjugate())).Multiply(speed);
 }
 
-void Quaternion::Rotate(Mesh& g, Quaternion& axis, float theta)
+void Quaternion::Rotate(Mesh& g, Vector3D& axis, float theta)
 {
     axis.Normalize();
     float sine = sin(theta/2);
@@ -126,4 +126,14 @@ void Quaternion::Rotate(Mesh& g, Quaternion& axis, float theta)
         point->y = qPrime.y;
         point->z = qPrime.z;
     }
+}
+
+void Quaternion::Rotate(Vector3D& axis, const float theta)
+{
+    axis.Normalize();
+    float sine = sin(theta / 2);
+    w = cos(theta / 2);
+    x = axis.x * sine;
+    y = axis.y * sine;
+    z = axis.z * sine;
 }

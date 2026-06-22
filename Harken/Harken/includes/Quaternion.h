@@ -20,8 +20,9 @@ class Quaternion
         Quaternion& Divide(const float scalar);
 
         friend Quaternion& operator*(Quaternion& q1, const Quaternion& q2);
-        Quaternion& Rotate(Quaternion& q2);
-        void Rotate(Mesh& g, Quaternion& axis, float theta);
+        Quaternion& Rotate(Quaternion& q2, float speed);
+        void Rotate(Mesh& g, Vector3D& axis, float theta);
+        void Rotate(Vector3D& axis, const float theta);
 
         Quaternion& Conjugate();
         Quaternion& Normalized();

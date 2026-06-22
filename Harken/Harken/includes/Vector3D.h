@@ -35,6 +35,7 @@ class Vector3D
         Vector3D& operator/=(float scalar);
 
         Vector3D& Normalized();
+        void Normalize();
 
         void setPosition(const float x, const float y, const float z);
         void setPosition(const Vector3D& v);
